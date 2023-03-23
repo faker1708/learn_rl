@@ -7,14 +7,6 @@ import torch.nn.functional as F
 import numpy as np
 import gym
 
-
-import matplotlib.pyplot as plt
- 
-plt.ion()
-plt.figure(1)
-t_list = []
-result_list = []
-
 # 1. Define some Hyper Parameters
 BATCH_SIZE = 32     # batch size of sampling process from buffer
 LR = 0.01           # learning rate
@@ -25,8 +17,7 @@ MEMORY_CAPACITY = 2000                  # The capacity of experience replay buff
 
 # env = gym.make("CartPole-v0") # Use cartpole game as environment
 # env = gym.make("CartPole-v1", render_mode="rgb_array") # Use cartpole game as environment
-# env = gym.make("CartPole-v1", render_mode="human") # Use cartpole game as environment
-env = gym.make("CartPole-v1") # Use cartpole game as environment
+env = gym.make("CartPole-v1", render_mode="human") # Use cartpole game as environment
 env = env.unwrapped
 N_ACTIONS = env.action_space.n  # 2 actions
 N_STATES = env.observation_space.shape[0] # 4 states
@@ -163,7 +154,7 @@ dqn = DQN()
 print("\nCollecting experience...")
 for i_episode in range(400):
     # play 400 episodes of cartpole game
-    # print('i_episode',i_episode)
+    print('i_episode',i_episode)
     s = env.reset()
     ep_r = 0
     while True:
@@ -189,18 +180,10 @@ for i_episode in range(400):
         if dqn.memory_counter > MEMORY_CAPACITY:
             dqn.learn()
             if done:
-                aax = round(ep_r, 2)
-                print('Ep: ', i_episode, ' |', 'Ep_r: ', aax)
-                t_list.append(i_episode)
-                result_list.append(aax)
+                print('Ep: ', i_episode, ' |', 'Ep_r: ', round(ep_r, 2))
         
-                plt.plot(t_list, result_list,c='deeppink')  ## 保存历史数据
-                plt.pause(0.1)
-
-
         if done:
             # if game is over, then skip the while loop.
             break
         # use next state to update the current state. 
         s = s_  
-plt.pause(100)
