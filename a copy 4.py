@@ -16,8 +16,7 @@ TARGET_NETWORK_REPLACE_FREQ = 100       # How frequently target netowrk updates
 MEMORY_CAPACITY = 2000                  # The capacity of experience replay buffer
 
 # env = gym.make("CartPole-v0") # Use cartpole game as environment
-# env = gym.make("CartPole-v1", render_mode="rgb_array") # Use cartpole game as environment
-env = gym.make("CartPole-v1", render_mode="human") # Use cartpole game as environment
+env = gym.make("CartPole-v1", render_mode="rgb_array") # Use cartpole game as environment
 env = env.unwrapped
 N_ACTIONS = env.action_space.n  # 2 actions
 N_STATES = env.observation_space.shape[0] # 4 states
@@ -65,7 +64,12 @@ class DQN(object):
     def  choose_action(self, x):
         # This function is used to make decision based upon epsilon greedy
         
-        
+        # print(x.shape)
+        # print(x)
+        # x = x[0]
+        print(type(x))
+        # print(type(x)=='tuple')
+        # print(isinstance(x,tuple))
         if(isinstance(x,tuple)):
             x = x[0]
 
@@ -92,8 +96,15 @@ class DQN(object):
     def store_transition(self, s, a, r, s_):
         # This function acts as experience replay buffer     
 
-        if(isinstance(s,tuple)):
-            s = s[0]    # byd  gym 更新接口了。
+        if(isinstance(s,np.ndarray)):
+            # print('ok')
+            pass
+        elif(isinstance(s,tuple)):
+            # print('not ok')
+            s = s[0]
+        else:
+            # print(type(s))
+            raise(BaseException('wrong'))
 
         transition = np.hstack((s, [a, r], s_)) # horizontally stack these vectors
         # if the capacity is full, then use index to replace the old memory with new one

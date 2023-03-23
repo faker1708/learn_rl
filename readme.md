@@ -60,6 +60,9 @@ s_, r, done, info = env.step(a)
 https://blog.csdn.net/qq_41871826/article/details/108263919
 他参考的莫烦
 
+我觉得莫烦这个教程挺好的。真的，认真学习吧。别瞎比乱想了。真的要搞出能用的东西，我们的科技才能进步。
+https://www.bilibili.com/video/BV1Vx411j7kT/?p=27&vd_source=88a8cff72324a68b12af164215c67b12
+
 拷贝的代码报错了
 
 https://blog.csdn.net/sinat_29957455/article/details/103487477
@@ -93,4 +96,11 @@ https://www.cnblogs.com/Renyi-Fan/p/13772136.html
 两条路1 不实现了，只看看原理就够
 2   认真学习原理，重写一遍。
 
-https://www.bilibili.com/video/BV1Vx411j7kT/?p=27&vd_source=88a8cff72324a68b12af164215c67b12
+
+
+我改明白了。
+这次包运行不成功，完全是因为byd gym官方更新了接口，导致类型有点乱。现在终于改好了。
+
+这次更新，要多检查这个 问题。添加这样的代码。
+        if(isinstance(x,tuple)):
+            x = x[0]

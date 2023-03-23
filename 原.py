@@ -15,9 +15,7 @@ GAMMA = 0.9         # discount factor
 TARGET_NETWORK_REPLACE_FREQ = 100       # How frequently target netowrk updates
 MEMORY_CAPACITY = 2000                  # The capacity of experience replay buffer
 
-# env = gym.make("CartPole-v0") # Use cartpole game as environment
-# env = gym.make("CartPole-v1", render_mode="rgb_array") # Use cartpole game as environment
-env = gym.make("CartPole-v1", render_mode="human") # Use cartpole game as environment
+env = gym.make("CartPole-v0") # Use cartpole game as environment
 env = env.unwrapped
 N_ACTIONS = env.action_space.n  # 2 actions
 N_STATES = env.observation_space.shape[0] # 4 states
@@ -53,8 +51,7 @@ class DQN(object):
         
         # ----Define the memory (or the buffer), allocate some space to it. The number 
         # of columns depends on 4 elements, s, a, r, s_, the total is N_STATES*2 + 2---#
-        # self.memory = np.zeros((MEMORY_CAPACITY, N_STATES * 2 + 2)) 
-        self.memory = np.zeros((MEMORY_CAPACITY, N_STATES * 2 +2)) 
+        self.memory = np.zeros((MEMORY_CAPACITY, N_STATES * 2 + 2)) 
         
         #------- Define the optimizer------#
         self.optimizer = torch.optim.Adam(self.eval_net.parameters(), lr=LR)
@@ -65,15 +62,7 @@ class DQN(object):
     def  choose_action(self, x):
         # This function is used to make decision based upon epsilon greedy
         
-        
-        if(isinstance(x,tuple)):
-            x = x[0]
-
-        x = torch.from_numpy(x)
-        # x = list(x[0])
         x = torch.unsqueeze(torch.FloatTensor(x), 0) # add 1 dimension to input state x
-
-
         # input only one sample
         if np.random.uniform() < EPSILON:   # greedy
             # use epsilon-greedy approach to take action
@@ -90,16 +79,10 @@ class DQN(object):
     
         
     def store_transition(self, s, a, r, s_):
-        # This function acts as experience replay buffer     
-
-        if(isinstance(s,tuple)):
-            s = s[0]    # byd  gym 更新接口了。
-
+        # This function acts as experience replay buffer        
         transition = np.hstack((s, [a, r], s_)) # horizontally stack these vectors
         # if the capacity is full, then use index to replace the old memory with new one
         index = self.memory_counter % MEMORY_CAPACITY
-
-
         self.memory[index, :] = transition
         self.memory_counter += 1
         
@@ -159,9 +142,8 @@ for i_episode in range(400):
         # take action based on the current state
         a = dqn.choose_action(s)
         # obtain the reward and next state and some other information
-        s_, r, terminate, xxx,info = env.step(a)
-        done = terminate
-
+        s_, r, done, info = env.step(a)
+        
         # modify the reward based on the environment state
         x, x_dot, theta, theta_dot = s_
         r1 = (env.x_threshold - abs(x)) / env.x_threshold - 0.8
