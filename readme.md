@@ -127,3 +127,5 @@ https://www.cnblogs.com/Renyi-Fan/p/13772136.html
 明天 起来改成gpu模式
 然后好好学习 qlearning 算法。
 
+看不懂，好累。
+
