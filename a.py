@@ -166,6 +166,8 @@ for i_episode in range(400):
     # print('i_episode',i_episode)
     s = env.reset()
     ep_r = 0
+
+    # 这里面是一局游戏
     while True:
         env.render()
         # take action based on the current state
